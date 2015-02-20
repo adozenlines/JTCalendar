@@ -169,6 +169,9 @@
     NSCalendar *calendar = self.calendarAppearance.calendar;
     NSDateComponents *dayComponent = [NSDateComponents new];
     
+    dayComponent.month = 0;
+    dayComponent.day = 0;
+    
     if(!self.calendarAppearance.isWeekMode){
         dayComponent.month = currentPage - (NUMBER_PAGES_LOADED / 2);
     }
@@ -176,6 +179,11 @@
         dayComponent.day = 7 * (currentPage - (NUMBER_PAGES_LOADED / 2));
     }
     
+    if(self.calendarAppearance.readFromRightToLeft){
+        dayComponent.month *= -1;
+        dayComponent.day *= -1;
+    }
+        
     NSDate *currentDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
     
     [self setCurrentDate:currentDate];
