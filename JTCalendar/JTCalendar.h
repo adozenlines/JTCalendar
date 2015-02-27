@@ -15,6 +15,8 @@
 
 #import "JTCalendarDataCache.h"
 
+FOUNDATION_EXTERN NSInteger const JTCalendarNumberOfPagesLoaded;
+
 @interface JTCalendar : NSObject<UIScrollViewDelegate>
 
 @property (weak, nonatomic) JTCalendarMenuView *menuMonthsView;

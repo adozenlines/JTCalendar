@@ -10,8 +10,6 @@
 #import "JTCalendar.h"
 #import "JTCalendarMenuMonthView.h"
 
-#define NUMBER_PAGES_LOADED 5 // Must be the same in JTCalendarView, JTCalendarMenuView, JTCalendarContentView
-
 @interface JTCalendarMenuView(){
     NSMutableArray *monthsViews;
 }
@@ -52,7 +50,7 @@
     self.showsVerticalScrollIndicator = NO;
     self.pagingEnabled = YES;
     
-    for(int i = 0; i < NUMBER_PAGES_LOADED; ++i){
+    for(int i = 0; i < JTCalendarNumberOfPagesLoaded; ++i){
         JTCalendarMenuMonthView *monthView = [JTCalendarMenuMonthView new];
                 
         [self addSubview:monthView];
@@ -60,11 +58,16 @@
     }
 }
 
++ (BOOL)requiresConstraintBasedLayout
+{
+    return YES;
+}
+
 - (void)layoutSubviews
 {
-    [self configureConstraintsForSubviews];
-        
+    
     [super layoutSubviews];
+    [self configureConstraintsForSubviews];
 }
 
 - (void)configureConstraintsForSubviews
@@ -93,7 +96,7 @@
         }
     }
     
-    self.contentSize = CGSizeMake(width * NUMBER_PAGES_LOADED, height);
+    self.contentSize = CGSizeMake(width * JTCalendarNumberOfPagesLoaded, height);
 }
 
 - (void)setCurrentDate:(NSDate *)currentDate
@@ -103,10 +106,10 @@
     NSCalendar *calendar = self.calendarManager.calendarAppearance.calendar;
     NSDateComponents *dayComponent = [NSDateComponents new];
     
-    for(int i = 0; i < NUMBER_PAGES_LOADED; ++i){
+    for(int i = 0; i < JTCalendarNumberOfPagesLoaded; ++i){
         JTCalendarMenuMonthView *monthView = monthsViews[i];
         
-        dayComponent.month = i - (NUMBER_PAGES_LOADED / 2);
+        dayComponent.month = i - (JTCalendarNumberOfPagesLoaded / 2);
         NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
         [monthView setCurrentDate:monthDate];
     }

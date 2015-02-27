@@ -12,8 +12,6 @@
 #import "JTCalendarMonthView.h"
 #import "JTCalendarWeekView.h"
 
-#define NUMBER_PAGES_LOADED 5 // Must be the same in JTCalendarView, JTCalendarMenuView, JTCalendarContentView
-
 @interface JTCalendarContentView(){
     NSMutableArray *monthsViews;
 }
@@ -54,7 +52,7 @@
     self.showsVerticalScrollIndicator = NO;
     self.pagingEnabled = YES;
     
-    for(int i = 0; i < NUMBER_PAGES_LOADED; ++i){
+    for(int i = 0; i < JTCalendarNumberOfPagesLoaded; ++i){
         JTCalendarMonthView *monthView = [JTCalendarMonthView new];
         [self addSubview:monthView];
         [monthsViews addObject:monthView];
@@ -63,9 +61,14 @@
 
 - (void)layoutSubviews
 {
-    [self configureConstraintsForSubviews];
     
-    [super layoutSubviews];
+    [self configureConstraintsForSubviews];
+
+}
+
++ (BOOL)requiresConstraintBasedLayout
+{
+    return YES;
 }
 
 - (void)configureConstraintsForSubviews
@@ -89,7 +92,7 @@
         }
     }
     
-    self.contentSize = CGSizeMake(width * NUMBER_PAGES_LOADED, height);
+    self.contentSize = CGSizeMake(width * JTCalendarNumberOfPagesLoaded, height);
 }
 
 - (void)setCurrentDate:(NSDate *)currentDate
@@ -98,20 +101,20 @@
 
     NSCalendar *calendar = self.calendarManager.calendarAppearance.calendar;
     
-    for(int i = 0; i < NUMBER_PAGES_LOADED; ++i){
+    for(int i = 0; i < JTCalendarNumberOfPagesLoaded; ++i){
         JTCalendarMonthView *monthView = monthsViews[i];
         
         NSDateComponents *dayComponent = [NSDateComponents new];
         
         if(!self.calendarManager.calendarAppearance.isWeekMode){
-            dayComponent.month = i - (NUMBER_PAGES_LOADED / 2);
+            dayComponent.month = i - (JTCalendarNumberOfPagesLoaded / 2);
          
             NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
             monthDate = [self beginningOfMonth:monthDate];
             [monthView setBeginningOfMonth:monthDate];
         }
         else{
-            dayComponent.day = 7 * (i - (NUMBER_PAGES_LOADED / 2));
+            dayComponent.day = 7 * (i - (JTCalendarNumberOfPagesLoaded / 2));
             
             NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
             monthDate = [self beginningOfWeek:monthDate];
