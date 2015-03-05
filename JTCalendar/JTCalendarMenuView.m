@@ -58,16 +58,11 @@
     }
 }
 
-+ (BOOL)requiresConstraintBasedLayout
-{
-    return YES;
-}
-
 - (void)layoutSubviews
 {
+    [self configureConstraintsForSubviews];
     
     [super layoutSubviews];
-    [self configureConstraintsForSubviews];
 }
 
 - (void)configureConstraintsForSubviews

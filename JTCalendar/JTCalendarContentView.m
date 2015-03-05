@@ -61,14 +61,9 @@
 
 - (void)layoutSubviews
 {
-    
     [self configureConstraintsForSubviews];
-
-}
-
-+ (BOOL)requiresConstraintBasedLayout
-{
-    return YES;
+    
+    [super layoutSubviews];
 }
 
 - (void)configureConstraintsForSubviews
